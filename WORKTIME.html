@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>工時換算器</title>
+
+<style>
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    padding:20px;
+    background:#f5f5f5;
+    font-family:sans-serif;
+}
+
+.card{
+    background:white;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+h1{
+    text-align:center;
+    margin-top:0;
+}
+
+textarea{
+    width:100%;
+    min-height:150px;
+    font-size:22px;
+    padding:15px;
+    border:2px solid #ddd;
+    border-radius:12px;
+}
+
+button{
+    width:100%;
+    height:60px;
+    margin-top:15px;
+    border:none;
+    border-radius:12px;
+    font-size:24px;
+    font-weight:bold;
+    background:#2196F3;
+    color:white;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.result{
+    margin-top:20px;
+    background:#f8f8f8;
+    border-radius:12px;
+    padding:15px;
+}
+
+.label{
+    font-size:18px;
+    color:#666;
+}
+
+.value{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+
+<h1>工時換算器</h1>
+
+<textarea id="input"
+placeholder="範例：
+
+8:18+4:39+8:37+7:58"></textarea>
+
+<button onclick="calculate()">
+計算工時
+</button>
+
+<div class="result">
+
+<div class="label">總工時</div>
+<div class="value" id="timeResult">0:00</div>
+
+<div class="label">小數工時</div>
+<div class="value" id="decimalResult">0.00</div>
+
+</div>
+
+</div>
+
+<script>
+
+function calculate(){
+
+    let text=document.getElementById("input").value;
+
+    let items=text.split("+");
+
+    let totalMinutes=0;
+
+    items.forEach(item=>{
+
+        item=item.trim();
+
+        if(item==="") return;
+
+        let parts=item.split(":");
+
+        if(parts.length!==2) return;
+
+        let h=parseInt(parts[0])||0;
+        let m=parseInt(parts[1])||0;
+
+        totalMinutes+=h*60+m;
+    });
+
+    let hours=Math.floor(totalMinutes/60);
+    let minutes=totalMinutes%60;
+
+    document.getElementById("timeResult").innerText=
+        hours+":"+
+        String(minutes).padStart(2,"0");
+
+    document.getElementById("decimalResult").innerText=
+        (totalMinutes/60).toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
